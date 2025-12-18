@@ -2,3 +2,4 @@ node_modules/
 dist/
 .env
 *.log
+TEST_MVP_HOTEL_DB.sqlite
