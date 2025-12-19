@@ -7,4 +7,24 @@ export default class GuestService {
   async createGuest(guest: Guest) {
     return await this.guestRepository.create(guest);
   }
+
+  async updateGuest(id: string, guest: Guest) {
+    return await this.guestRepository.update(id, guest);
+  }
+
+  async deleteGuest(id: string) {
+    return await this.guestRepository.delete(id);
+  }
+
+  async getGuestList() {
+    return await this.guestRepository.findAll();
+  }
+
+  async getGuestById(id: string) {
+    return await this.guestRepository.findById(id);
+  }
+
+  async getGuestByName(name: string) {
+    return await this.guestRepository.findByName(name);
+  }
 }

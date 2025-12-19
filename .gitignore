@@ -3,3 +3,6 @@ dist/
 .env
 *.log
 TEST_MVP_HOTEL_DB.sqlite
+
+# mocks
+guests_mock.json
