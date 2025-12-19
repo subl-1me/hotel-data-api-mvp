@@ -10,6 +10,11 @@ export function createGuestRoutes(container: Container): Router {
   const guestController = new GuestController(guestService);
 
   router.post("/", guestController.insert.bind(guestController));
+  router.put("/:id", guestController.update.bind(guestController));
+  router.delete("/:id", guestController.remove.bind(guestController));
+  router.get("/", guestController.items.bind(guestController));
+  router.get("/:id", guestController.itemById.bind(guestController));
+  router.get("/search/:name", guestController.itemByName.bind(guestController));
 
   return router;
 }

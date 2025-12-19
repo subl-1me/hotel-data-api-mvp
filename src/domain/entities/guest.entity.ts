@@ -7,6 +7,6 @@ export default interface Guest {
   email: string;
   phone: string;
   reservations: Reservation[];
-  creatAt: Date;
+  createdAt: Date;
   updatedAt: Date;
 }
