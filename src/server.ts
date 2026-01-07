@@ -4,6 +4,7 @@ import cors from "cors";
 import ServerConfig from "./shared/interfaces/ServerConfig";
 import { Container } from "./infrastructure/container/container";
 import { createGuestRoutes } from "./api/routes/guest.routes";
+import { createReservationRoutes } from "./api/routes/reservation.routes";
 
 export default class Server {
   public app: Application;
@@ -29,6 +30,7 @@ export default class Server {
     }
 
     this.app.use("/api/guests", createGuestRoutes(this.container));
+    this.app.use("/api/reservations", createReservationRoutes(this.container));
   }
 
   public start() {

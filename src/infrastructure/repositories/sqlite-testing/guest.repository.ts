@@ -13,7 +13,8 @@ export class SqliteGuestRepository implements IGuestRepository {
   private initTable(): void {
     this.db.run(`
       CREATE TABLE IF NOT EXISTS guests (
-        id TEXT PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        guestId TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         names TEXT NOT NULL,
         surnames TEXT NOT NULL,
@@ -28,9 +29,9 @@ export class SqliteGuestRepository implements IGuestRepository {
   async create(guest: Guest): Promise<Guest> {
     return new Promise((resolve, reject) => {
       this.db.run(
-        "INSERT INTO guests (id, email, names, surnames, phone, reservations) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO guests (guestId, email, names, surnames, phone, reservations) VALUES (?, ?, ?, ?, ?, ?)",
         [
-          guest.id,
+          guest.guestId,
           guest.email,
           guest.names,
           guest.surnames,
@@ -46,6 +47,8 @@ export class SqliteGuestRepository implements IGuestRepository {
   }
 
   async update(id: string, guest: Partial<Guest>): Promise<Guest | null> {
+    guest.reservations = JSON.stringify(guest.reservations || "[]");
+    console.log(guest);
     const fields = Object.keys(guest)
       .map((key) => `${key} = ?`)
       .join(", ");
@@ -53,7 +56,7 @@ export class SqliteGuestRepository implements IGuestRepository {
     const values = Object.values(guest);
     return new Promise((resolve, reject) => {
       this.db.run(
-        `UPDATE guests SET ${fields} WHERE id = ?`,
+        `UPDATE guests SET ${fields} WHERE guestId = ?`,
         [...values, id],
         function (err) {
           if (err) reject(err);
@@ -101,7 +104,7 @@ export class SqliteGuestRepository implements IGuestRepository {
   async findById(id: string): Promise<Guest | null> {
     return new Promise((resolve, reject) => {
       this.db.all(
-        `SELECT * FROM guests WHERE id = ?`,
+        `SELECT * FROM guests WHERE guestId = ?`,
         [id],
         function (err, res) {
           if (err) reject(err);

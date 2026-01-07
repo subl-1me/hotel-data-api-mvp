@@ -1,14 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import GuestService from "../../application/services/guest.service";
+import ReservationService from "../../application/services/reservation.service";
 
-export default class GuestController {
-  constructor(private guestService: GuestService) {}
+export default class ReservationController {
+  constructor(private reservationService: ReservationService) {}
 
   async insert(req: Request, res: Response) {
     try {
-      console.log(req.body);
-      const response = await this.guestService.createGuest(req.body);
-      res.status(201).json(response);
+      const reservation = await this.reservationService.createReservation(
+        req.body
+      );
+
+      res.status(201).json(reservation);
     } catch (error) {
       res.status(500).json({
         error:
@@ -27,7 +29,10 @@ export default class GuestController {
       }
 
       //TODO: validate body
-      const response = await this.guestService.updateGuest(id, req.body);
+      const response = await this.reservationService.updateReservation(
+        id,
+        req.body
+      );
       res.status(200).json(response);
     } catch (error) {
       res.status(500).json({
@@ -46,7 +51,7 @@ export default class GuestController {
         });
       }
 
-      const response = await this.guestService.deleteGuest(id);
+      const response = await this.reservationService.deleteReservation(id);
       res.status(200).json(response);
     } catch (error) {
       res.status(500).json({
@@ -58,7 +63,7 @@ export default class GuestController {
 
   async items(_req: Request, res: Response) {
     try {
-      const response = await this.guestService.getGuestList();
+      const response = await this.reservationService.getReservationList();
       res.status(200).json(response);
     } catch (error) {
       res.status(500).json({
@@ -73,10 +78,10 @@ export default class GuestController {
       const id = req.params["id"];
       if (!id || id === "") {
         res.status(400).json({
-          error: "Guest ID not provided.",
+          error: "Reservation ID not provided.",
         });
       }
-      const response = await this.guestService.getGuestById(id);
+      const response = await this.reservationService.getReservationById(id);
       res.status(200).json(response);
     } catch (error) {
       res.status(500).json({
@@ -86,7 +91,7 @@ export default class GuestController {
     }
   }
 
-  async itemByName(req: Request, res: Response) {
+  async itemByGuestName(req: Request, res: Response) {
     try {
       const name = req.params["name"];
       if (!name || name === "") {
@@ -94,7 +99,9 @@ export default class GuestController {
           error: "Guest name not provided.",
         });
       }
-      const response = await this.guestService.getGuestByName(name);
+      const response = await this.reservationService.getReservationByGuestName(
+        name
+      );
       res.status(200).json(response);
     } catch (error) {
       res.status(500).json({

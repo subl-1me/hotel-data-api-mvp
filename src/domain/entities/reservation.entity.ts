@@ -1,7 +1,9 @@
 import Guest from "./guest.entity";
 
 export default interface Reservation {
-  guest: Guest;
+  id: string;
+  reservationId: string;
+  guest: Guest | string;
   dateIn: string;
   dateOut: string;
   rates: any;
@@ -9,4 +11,6 @@ export default interface Reservation {
   status: string;
   paymentStatus: string;
   confirmation: string;
+  createdAt: string;
+  updatedAt: string;
 }

@@ -4,6 +4,7 @@ import { getDatabaseConfig } from "../config/database.config";
 
 // services
 import GuestService from "../../application/services/guest.service";
+import ReservationService from "../../application/services/reservation.service";
 
 export class Container {
   private static instance: Container;
@@ -49,17 +50,26 @@ export class Container {
       this.connection
     );
     this.repositories.set("GuestRepository", userRepo);
+
+    const reservationRepo = RepositoryFactory.createReservationRepository(
+      dbType,
+      this.connection
+    );
+    this.repositories.set("ReservationRepository", reservationRepo);
   }
 
   private registerServices() {
     // get repos
     const userRepo = this.repositories.get("GuestRepository");
+    const reservationRepo = this.repositories.get("ReservationRepository");
 
     // setup services
     const guestRepository = new GuestService(userRepo);
+    const reservationRepository = new ReservationService(reservationRepo);
 
     // register services
     this.services.set("GuestService", guestRepository);
+    this.services.set("ReservationService", reservationRepository);
   }
 
   // get instances
