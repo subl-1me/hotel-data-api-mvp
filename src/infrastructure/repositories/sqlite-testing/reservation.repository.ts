@@ -48,14 +48,14 @@ export class SqliteReservationRepository implements IReservationRepository {
         function (err) {
           if (err) reject(err);
           resolve(reservation);
-        }
+        },
       );
     });
   }
 
   async update(
     id: string,
-    reservation: Partial<Reservation>
+    reservation: Partial<Reservation>,
   ): Promise<Reservation | null> {
     const fields = Object.keys(reservation)
       .map((key) => `${key} = ?`)
@@ -69,7 +69,7 @@ export class SqliteReservationRepository implements IReservationRepository {
         function (err) {
           if (err) reject(err);
           resolve(null);
-        }
+        },
       );
     });
   }
@@ -124,7 +124,7 @@ export class SqliteReservationRepository implements IReservationRepository {
           }
 
           resolve(res[0] as Reservation);
-        }
+        },
       );
     });
   }
@@ -132,7 +132,12 @@ export class SqliteReservationRepository implements IReservationRepository {
   async findById(id: string): Promise<Reservation | null> {
     return new Promise((resolve, reject) => {
       this.db.all(
-        `SELECT * FROM reservations WHERE reservationId = ?`,
+        `
+        SELECT r.* ,
+        g.email as g_email
+        FROM reservations r
+        JOIN Guests g ON g.guestId = r.guest
+        WHERE confirmation = ?`,
         [id],
         function (err, res) {
           if (err) reject(err);
@@ -141,13 +146,14 @@ export class SqliteReservationRepository implements IReservationRepository {
           }
 
           resolve(res[0] as Reservation);
-        }
+        },
       );
     });
   }
 
-  async findByGuestName(name: string): Promise<Reservation[] | null> {
+  async findByGuestName(fullName: string): Promise<Reservation[] | null> {
     return new Promise((resolve, reject) => {
+      console.log(fullName);
       this.db.all(
         `
       SELECT r.* ,
@@ -158,13 +164,14 @@ export class SqliteReservationRepository implements IReservationRepository {
       g.phone as g_phone
       FROM reservations r
       JOIN Guests g ON g.guestId = r.guest
-      WHERE g.names LIKE ?
+     WHERE names || ' ' || surnames LIKE ? 
+      OR surnames || ' ' || names LIKE ?
       `,
-        [`%${name}%`],
+        [fullName, fullName],
         (err, rows) => {
           if (err) reject(err);
           resolve(rows as Reservation[]);
-        }
+        },
       );
     });
   }

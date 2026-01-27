@@ -93,7 +93,9 @@ export default class ReservationController {
 
   async itemByGuestName(req: Request, res: Response) {
     try {
-      const name = req.params["name"];
+      const fullName = req.params["name"];
+      const name = fullName.replace("-", " ");
+
       if (!name || name === "") {
         res.status(400).json({
           error: "Guest name not provided.",

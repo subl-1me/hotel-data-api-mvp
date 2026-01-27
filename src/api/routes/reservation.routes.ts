@@ -14,16 +14,16 @@ export function createReservationRoutes(container: Container): Router {
   router.put("/:id", reservationController.update.bind(reservationController));
   router.delete(
     "/:id",
-    reservationController.remove.bind(reservationController)
+    reservationController.remove.bind(reservationController),
   );
   router.get("/", reservationController.items.bind(reservationController));
   router.get(
     "/:id",
-    reservationController.itemById.bind(reservationController)
+    reservationController.itemById.bind(reservationController),
   );
   router.get(
     "/search/:name",
-    reservationController.itemByGuestName.bind(reservationController)
+    reservationController.itemByGuestName.bind(reservationController),
   );
 
   return router;

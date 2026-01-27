@@ -28,7 +28,7 @@ export default class ReservationService {
     return await this.reservationRepository.findByConfirmation(id);
   }
 
-  async getReservationByGuestName(name: string) {
-    return await this.reservationRepository.findByGuestName(name);
+  async getReservationByGuestName(fullName: string) {
+    return await this.reservationRepository.findByGuestName(fullName);
   }
 }

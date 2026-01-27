@@ -43,10 +43,10 @@ export default class Server {
 
       console.log("\n=====================================".repeat(5));
       console.log(
-        `\nHotel AI Assistant ~ Reservation & Customer Data Consulting Service`
+        `\nHotel AI Assistant ~ Reservation & Customer Data Consulting Service`,
       );
       console.log(
-        `Server running on: http://localhost:${this.serverConfig.port}`
+        `Server running on: http://localhost:${this.serverConfig.port}`,
       );
       console.log("\n=====================================".repeat(5));
     });
